@@ -7,6 +7,9 @@ This is an experimental Project. The aim of this library is to autoselect visuai
 2. Declare Data with a label `add_data({score-values: some_array})`
 3. Define inputdata by function call `add_predicition_score(some_array)`
 
+## Visualize
+
+After you have inputed all the data you can just call the `visualize()` function and it will generated all possible vissualizations.
 
 ### Try it yourself and explore examples
 
