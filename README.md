@@ -1,3 +1,3 @@
 # Notebook for data science autoselect. 
 
-Fill in the fields to see the markdown badge snippet.
+[![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/vali101/vis-autoselect-ml/master)
