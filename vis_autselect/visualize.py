@@ -3,6 +3,8 @@ from vis_autselect.classifiedArray import classifiedArray
 
 class Visualizer:
 
+    
+
     def __init__(self):
         self.data_classified = list()
 
@@ -10,9 +12,9 @@ class Visualizer:
         data = organiseInList(data)
         data = standardize_precition_or_test_values(data) 
         self.data_classified.append(classify(data))
-        return data
 
     def get_classified_data(self):
+        evaluate_classification(self.data_classified)
         return self.data_classified
 
 
@@ -22,23 +24,19 @@ def classify(data):
     return classifiedArray(data, classify_types(data))
 
 def classify_types(data):
-    if contains_type(float, data):
-        return 'confidence_scores'
-    elif contains_type(bool, data) or contains_type(int, data) or contains_type(str, data):
-        return 'undefined'
-    elif contains_type(list, data):
-        dimensions = len(data)
-        #print(dimensions)
-        #print(containing_floats)
-        #print(containing_ints)
-        #print()
-        if dimensions == 2:
-            if contains_type(float, data):
-                return 'roc'
-            elif contains_type(int, data):
-                return 'cm'
+    if contains_type(list, data):
+        if len(data) == 2:
+            if contains_type_deep(int, data):
+                return['Confusion Matrix'] 
+            if contains_type_deep(float, data):
+                return ['ROC']
     else:
-        raise Exception("No type found")
+        if contains_type(float, data):
+            return ['Confidence Scores']
+        elif contains_type(bool, data) or contains_type(int, data) or contains_type(str, data):
+            return ['Ground Truth Values', 'Predictions']
+        else:
+            raise Exception("No type found")
 
 # Wraps single list in another list on top
 def organiseInList(data):
@@ -58,11 +56,21 @@ def standardize_precition_or_test_values(arr):
     else:
         return arr
 
-def contains_type(type, data):
+def contains_type_deep(type, data):
     if all(isinstance(item, list) for item in data):
         return all(isinstance(item, type) for array in data for item in array)
     else: 
         return all(isinstance(item, type) for item in data)
+
+def contains_type(type, data):
+    return all(isinstance(item, type) for item in data)
+
+
+def evaluate_classification(data):
+    exact_guesses = len([x for x in data if len(x.type) < 2])
+    amount_inputs = len(data)
+    print(exact_guesses, 'out of ', amount_inputs, 'inputed array can be classified')
+
 
 
     
