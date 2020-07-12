@@ -1,4 +1,5 @@
 from vis_autselect.classifiedArray import classifiedArray
+import numpy as np
 
 
 class Visualizer:
@@ -8,14 +9,41 @@ class Visualizer:
     def __init__(self):
         self.data_classified = list()
 
+    # Function which selects the type of the input array. 
     def select(self, data):
+        if(isinstance(data, np.ndarray)):
+                data = data.tolist()
         data = organiseInList(data)
         data = standardize_precition_or_test_values(data) 
         self.data_classified.append(classify(data))
 
+    def select_annoted(self = None, test= None, pred = None, score = None, confusion_matrix = None, roc = None):
+        self.data_classified.extend([item for item in locals().values() if type(item) == list])
+        
+
+    # Returns the classified data.
     def get_classified_data(self):
         evaluate_classification(self.data_classified)
         return self.data_classified
+
+    # Describes tha classified and not classified arrays.
+    def info(self):
+        if len(self.data_classified) == 0: 
+            print("No data has been entered.")
+        else:
+            # Find data if is correctly classified.
+            availble_data = [x.type[0] for x in self.data_classified if len(x.type) < 2]
+            print("The following arrays have beem classified: ", availble_data, "\n")
+
+            not_classified = [x for x in self.data_classified if len(x.type) > 1]
+            for item in not_classified:
+                print("For the given array a decision between the types: ", item.type, " could have not been made.")
+                print("Input Data: ", item.data, "\n") 
+
+    # Deletes all the entered data.
+    def delete_data(self):
+        self.data_classified = list()
+
 
 
 
@@ -44,8 +72,6 @@ def organiseInList(data):
         return data
     else: 
         return data
-
-
 
 
 def standardize_precition_or_test_values(arr):
