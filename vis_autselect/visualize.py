@@ -1,13 +1,17 @@
 from vis_autselect.classifiedArray import classifiedArray
 import numpy as np
 
+match_data = {
+        'ROC' : [['ROC'], ['Ground Truth Values', 'Confidence Scores']],
+        'Confusion Matrix' :[ ['Confusion Matrix']],
+        'Precision Recall Curve' : [['Ground Truth Values', 'Predictions']]
+    }
 
 class Visualizer:
 
-    
-
     def __init__(self):
         self.data_classified = list()
+        
 
     # Function which selects the type of the input array. 
     def select(self, data):
@@ -19,6 +23,10 @@ class Visualizer:
 
     def select_annoted(self = None, test= None, pred = None, score = None, confusion_matrix = None, roc = None):
         self.data_classified.extend([item for item in locals().values() if type(item) == list])
+
+    def input_dict(self, data_dict):
+        # Change dict to classifiedArraytype
+        self.data_classified.extend([classifiedArray(item[1], [item[0]])for item in data_dict.items()])
         
 
     # Returns the classified data.
@@ -44,6 +52,21 @@ class Visualizer:
     def delete_data(self):
         self.data_classified = list()
 
+    def visualize(self):
+        keys = [item.type[0] for item in self.data_classified if len(item.type) < 2]
+        matches = match(keys)
+
+
+
+        
+""" def match(keys):
+    possible_vis = list()
+
+    for item in match_data.items():
+        matches = item[1]
+        for match in matches:
+            if  all(elem in list1  for elem in list2)
+                print('possible') """
 
 
 
