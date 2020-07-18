@@ -1,4 +1,5 @@
 from vis_autselect.classifiedArray import classifiedArray
+from vis_autselect.plotter import plot_confusion_matrix
 import numpy as np
 
 match_data = {
@@ -25,6 +26,8 @@ class Visualizer:
         self.data_classified.extend([item for item in locals().values() if type(item) == list])
 
     def input_dict(self, data_dict):
+        data_dict = {k : data.tolist() if isinstance(data, np.ndarray) else data for k, data in data_dict.values}
+        print(data_dict)
         # Change dict to classifiedArraytype
         self.data_classified.extend([classifiedArray(item[1], [item[0]])for item in data_dict.items()])
         
@@ -53,20 +56,46 @@ class Visualizer:
         self.data_classified = list()
 
     def visualize(self):
+        possible_vis = self.find_possible_vis()
+        visualizations = list()
+
+        for vis in possible_vis.items():
+            visualizations.append(self.plot(vis))
+    
+        return visualizations
+
+    def find_possible_vis(self):
         keys = [item.type[0] for item in self.data_classified if len(item.type) < 2]
-        matches = match(keys)
 
+        possible_vis = dict()
 
-
+        for item in match_data.items():
+            matches = item[1]
+            vis_type = item[0]
+            for match in matches:
+                if  all(elem in keys  for elem in match):
+                    possible_vis.update({vis_type : match})
         
-""" def match(keys):
-    possible_vis = list()
+        return possible_vis
 
-    for item in match_data.items():
-        matches = item[1]
-        for match in matches:
-            if  all(elem in list1  for elem in list2)
-                print('possible') """
+    def plot(self, vis):
+        vis_name = vis[0]
+        vis_needed_data = vis[1]
+        
+        vis_data = self.get_data(vis_needed_data)
+
+        print(vis_name)
+        print(vis_data)
+
+        if vis_name == "Confusion Matrix":
+            return plot_confusion_matrix(vis_needed_data)
+
+    def get_data(self, vis_needed_data):
+        export_data = list()
+        for search in vis_needed_data:
+            export_data.append([data.data for data in self.data_classified if data.type[0] == search])
+        return export_data
+        
 
 
 
