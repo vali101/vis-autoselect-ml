@@ -26,8 +26,8 @@ class Visualizer:
         self.data_classified.extend([item for item in locals().values() if type(item) == list])
 
     def input_dict(self, data_dict):
-        data_dict = {k : data.tolist() if isinstance(data, np.ndarray) else data for k, data in data_dict.values}
-        print(data_dict)
+        #data_dict = {k : data.tolist() if isinstance(data, np.ndarray) else data for k, data in data_dict.values}
+        #print(data_dict)
         # Change dict to classifiedArraytype
         self.data_classified.extend([classifiedArray(item[1], [item[0]])for item in data_dict.items()])
         
