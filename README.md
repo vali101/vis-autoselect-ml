@@ -16,8 +16,8 @@ vis = visualize.Visualizer()
 ## Input data with the select function 
 You can import data in two different ways 
 1. Pass in an output array from your ml experiment 
-`vis.select(somer_arr)`
-2. Pass in an annotated array to help classify the input data `vis.input_dict({Confidence Scores': y_score})`
+`vis.select(some_arr)`
+2. Pass in an annotated array to help classify the input data `vis.input_dict({'Confidence Scores': y_score})`
 
 
 There is also the possibillity to import multiple object as such: 
